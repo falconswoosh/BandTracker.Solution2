@@ -1,0 +1,21 @@
+@{
+  Layout = "_Layout";
+}
+
+<h1>Clients for Model["stylist"].name</h1>
+<div class="stylistDetails">
+@if(Model["client"].Count == 0)
+{
+  <h3>There are no clients for @Model["stylist"].GetId() yet.</h3>
+}
+else
+{
+  @foreach(var client in Model["client"])
+  {
+    <p>@client.GetName()</p>
+    <p><a href="/stylist/@stylist.GetId()/client/update/@client.GetId()"></a></p>
+    <p><a href='/stylist/@Model["stylist"].GetId()/client/delete/@Model["client"].GetId()'></a></p>
+  }
+}
+
+</div>

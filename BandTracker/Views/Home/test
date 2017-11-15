@@ -1,0 +1,24 @@
+<a href="/">Back Home</a><br>
+<a href="/stylist/@Model['stylist'].GetId()/client/update">Update a Client<a><br>
+<a href="/stylist/new">Add a Stylist<a><br>
+<a href="stylist/@Model['stylist'].GetId()/client/update">Update a Client<a><br>
+<a href="stylist/@Model["stylist"].GetId()/stylist/update">Update a Stylist<a><br>
+
+
+
+
+<a href="/">Back Home</a><br>
+<a href="stylist/{sid}/client/update">Update a Client<a><br>
+<a href="/stylist/new">Add a Stylist<a><br>
+<a href="stylist/{sid}/client/update">Update a Client<a><br>
+<a href="stylist/{sid}/stylist/update">Update a Stylist<a><br>
+
+
+<a href="/stylist/@Model["stylist"].GetId()">Update a Client<a><br>
+<a href="/stylist/new">Add a Stylist<a><br>
+<a href="/stylist/{sid}/client/update">Update a Client<a><br>
+<a href="/stylist/{sid}/stylist/update">Update a Stylist<a><br>
+
+/*<br>
+<p><a href='/stylist/Model["stylist"].id/client'>Add a new client</a></p>
+<br>*/
