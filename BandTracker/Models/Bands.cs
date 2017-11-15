@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using MySql.Data.MySqlClient;
+using MySql.Data.MySqlBand;
 using System.Linq;
 using HairSalon;
 using System;
@@ -10,28 +10,28 @@ namespace BandTracker.Models
   {
     private int _id;
     private string _name;
-    private int _stylistId;
+    private int _venueId;
 
-    public Band(string name, int stylistId, int id = 0)
+    public Band(int id = 0, string name, int venueId)
     {
       _id = id;
-      _stylistId = stylistId;
       _name = name;
+      _venueId = venueId;
     }
 
-    public override bool Equals(System.Object otherClient)
+    public override bool Equals(System.Object otherBand)
     {
-      if (!(otherClient is Client))
+      if (!(otherBand is Band))
       {
         return false;
       }
       else
       {
-        Client newClient = (Client) otherClient;
-        bool idEquality = this.GetId() == newClient.GetId();
-        bool nameEquality = (this.GetName() == newClient.GetName());
-        bool stylistEquality = this.GetStylistId() == newClient.GetStylistId();
-        return (idEquality && nameEquality && stylistEquality);
+        Band newBand = (Band) otherBand;
+        bool idEquality = this.GetId() == newBand.GetId();
+        bool nameEquality = (this.GetName() == newBand.GetName());
+        bool venueEquality = this.GetBandId() == newBand.GetVenueId();
+        return (idEquality && nameEquality && venueEquality);
       }
     }
     public override int GetHashCode()
@@ -47,9 +47,9 @@ namespace BandTracker.Models
     {
         return _id;
     }
-    public int GetStylistId()
+    public int GetVenueId()
     {
-        return _stylistId;
+        return _venueId;
     }
     public void Save()
     {
@@ -57,17 +57,17 @@ namespace BandTracker.Models
         conn.Open();
 
         var cmd = conn.CreateCommand() as MySqlCommand;
-        cmd.CommandText = @"INSERT INTO clients (name, stylist_id) VALUES (@name, @stylist_id);";
+        cmd.CommandText = @"INSERT INTO bands (name, venue_id) VALUES (@name, @venue_id);";
 
         MySqlParameter name = new MySqlParameter();
         name.ParameterName = "@name";
         name.Value = _name;
         cmd.Parameters.Add(name);
 
-        MySqlParameter stylistId = new MySqlParameter();
-        stylistId.ParameterName = "@stylist_id";
-        stylistId.Value = this._stylistId;
-        cmd.Parameters.Add(stylistId);
+        MySqlParameter venueId = new MySqlParameter();
+        venueId.ParameterName = "@venue_id";
+        venueId.Value = this._venueId;
+        cmd.Parameters.Add(venueId);
 
 
         cmd.ExecuteNonQuery();
@@ -79,12 +79,12 @@ namespace BandTracker.Models
         }
     }
 
-    public static Client Find(int id)
+    public static Band Find(int id)
     {
         MySqlConnection conn = DB.Connection();
         conn.Open();
         var cmd = conn.CreateCommand() as MySqlCommand;
-        cmd.CommandText = @"SELECT * FROM clients WHERE id = (@searchId);";
+        cmd.CommandText = @"SELECT * FROM bands WHERE id = (@searchId);";
 
         MySqlParameter searchId = new MySqlParameter();
         searchId.ParameterName = "@searchId";
@@ -92,53 +92,53 @@ namespace BandTracker.Models
         cmd.Parameters.Add(searchId);
 
         var rdr = cmd.ExecuteReader() as MySqlDataReader;
-        int clientId = 0;
-        string clientName = "";
-        int clientStylistId = 0;
+        int bandId = 0;
+        string bandName = "";
+        int bandVenueId = 0;
 
         while(rdr.Read())
         {
-          clientId = rdr.GetInt32(0);
-          clientName = rdr.GetString(1);
-          clientStylistId = rdr.GetInt32(2);
+          bandId = rdr.GetInt32(0);
+          bandName = rdr.GetString(1);
+          bandVenueId = rdr.GetInt32(2);
         }
-        Client newClient = new Client(clientName, clientStylistId, clientId);
+        Band newBand = new Band(bandName, bandVenueId, bandId);
         conn.Close();
         if (conn != null)
         {
             conn.Dispose();
         }
-        return newClient;
+        return newBand;
     }
-    public static List<Client> GetAll()
+    public static List<Band> GetAll()
     {
-        List<Client> allClients = new List<Client> {};
+        List<Band> allBands = new List<Band> {};
         MySqlConnection conn = DB.Connection();
         conn.Open();
         var cmd = conn.CreateCommand() as MySqlCommand;
-        cmd.CommandText = @"SELECT * FROM clients;";
+        cmd.CommandText = @"SELECT * FROM bands;";
         var rdr = cmd.ExecuteReader() as MySqlDataReader;
         while(rdr.Read())
         {
-          int clientId = rdr.GetInt32(0);
-          string clientName = rdr.GetString(1);
-          int clientStylistId = rdr.GetInt32(2);
-          Client newClient = new Client(clientName, clientStylistId, clientId);
-          allClients.Add(newClient);
+          int bandId = rdr.GetInt32(0);
+          string bandName = rdr.GetString(1);
+          int bandVenueId = rdr.GetInt32(2);
+          Band newBand = new Band(bandName, bandVenueId, bandId);
+          allBands.Add(newBand);
         }
         conn.Close();
         if (conn != null)
         {
             conn.Dispose();
         }
-        return allClients;
+        return allBands;
     }
-    public static void DeleteClient(int id)
+    public static void DeleteBand(int id)
     {
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"DELETE FROM clients WHERE id = @searchId";
+      cmd.CommandText = @"DELETE FROM bands WHERE id = @searchId";
 
       MySqlParameter searchId = new MySqlParameter();
       searchId.ParameterName = "@searchId";
@@ -157,7 +157,7 @@ namespace BandTracker.Models
         MySqlConnection conn = DB.Connection();
         conn.Open();
         var cmd = conn.CreateCommand() as MySqlCommand;
-        cmd.CommandText = @"DELETE FROM clients;";
+        cmd.CommandText = @"DELETE FROM bands;";
         cmd.ExecuteNonQuery();
         conn.Close();
         if (conn != null)
@@ -165,12 +165,12 @@ namespace BandTracker.Models
             conn.Dispose();
         }
     }
-    public void UpdateClient(string newName)
+    public void UpdateBand(string newName)
     {
         MySqlConnection conn = DB.Connection();
         conn.Open();
         var cmd = conn.CreateCommand() as MySqlCommand;
-        cmd.CommandText = @"UPDATE clients SET name = @newName WHERE id = @searchId;";
+        cmd.CommandText = @"UPDATE bands SET name = @newName WHERE id = @searchId;";
 
         MySqlParameter searchId = new MySqlParameter();
         searchId.ParameterName = "@searchId";

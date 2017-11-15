@@ -14,36 +14,36 @@ namespace BandTracker.Tests
         }
 
        [TestMethod]
-       public void GetAll_ClientsEmptyAtFirst_0()
+       public void GetAll_BandsEmptyAtFirst_0()
        {
          //Arrange, Act
-         int result = Client.GetAll().Count;
+         int result = Band.GetAll().Count;
 
          //Assert
          Assert.AreEqual(0, result);
        }
 
       [TestMethod]
-      public void Equals_ReturnsTrueForSameName_Client()
+      public void Equals_ReturnsTrueForSameName_Band()
       {
         //Arrange, Act
-        Client firstClient = new Client("Barry");
-        Client secondClient = new Client("Wendy");
+        Band firstBand = new Band("Barry");
+        Band secondBand = new Band("Wendy");
 
         //Assert
-        Assert.AreEqual(firstClient, secondClient);
+        Assert.AreEqual(firstBand, secondBand);
       }
 
       [TestMethod]
-      public void Save_SavesClientToDatabase_ClientList()
+      public void Save_SavesBandToDatabase_BandList()
       {
         //Arrange
-        Client testClient = new Client("Wendy");
-        testClient.Save();
+        Band testBand = new Band("Wendy");
+        testBand.Save();
 
         //Act
-        List<Client> result = Client.GetAll();
-        List<Client> testList = new List<Client>{testClient};
+        List<Band> result = Band.GetAll();
+        List<Band> testList = new List<Band>{testBand};
 
         //Assert
         CollectionAssert.AreEqual(testList, result);
@@ -51,17 +51,17 @@ namespace BandTracker.Tests
 
 
      [TestMethod]
-     public void Save_DatabaseAssignsIdToClient_Id()
+     public void Save_DatabaseAssignsIdToBand_Id()
      {
        //Arrange
-       Client testClient = new Client("Barry");
-       testClient.Save();
+       Band testBand = new Band("Barry");
+       testBand.Save();
 
        //Act
-       Client savedClient = Client.GetAll()[0];
+       Band savedBand = Band.GetAll()[0];
 
-       int result = savedClient.GetId();
-       int testId = testClient.GetId();
+       int result = savedBand.GetId();
+       int testId = testBand.GetId();
 
        //Assert
        Assert.AreEqual(testId, result);
@@ -69,23 +69,23 @@ namespace BandTracker.Tests
 
 
     [TestMethod]
-    public void Find_FindsClientInDatabase_Client()
+    public void Find_FindsBandInDatabase_Band()
     {
       //Arrange
-      Client testClient = new Client("Wendy");
-      testClient.Save();
+      Band testBand = new Band("Wendy");
+      testBand.Save();
 
       //Act
-      Client foundClient = Client.Find(testClient.GetId());
+      Band foundBand = Band.Find(testBand.GetId());
 
       //Assert
-      Assert.AreEqual(testClient, foundClient);
+      Assert.AreEqual(testBand, foundBand);
     }
 
     public void Dispose()
     {
       Task.DeleteAll();
-      Client.DeleteAll();
+      Band.DeleteAll();
     }
   }
 }

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using MySql.Data.MySqlClient;
+using MySql.Data.MySqlBand;
 using System.Linq;
 using System;
 
@@ -14,16 +14,16 @@ namespace BandTracker.Models
             _name = name;
             _id = id;
         }
-        public override bool Equals(System.Object otherStylist)
+        public override bool Equals(System.Object otherVenue)
         {
-            if (!(otherStylist is Stylist))
+            if (!(otherVenue is Venue))
             {
                 return false;
             }
             else
             {
-                Stylist newStylist = (Stylist) otherStylist;
-                return this.GetId().Equals(newStylist.GetId());
+                Venue newVenue = (Venue) otherVenue;
+                return this.GetId().Equals(newVenue.GetId());
             }
         }
         public override int GetHashCode()
@@ -44,7 +44,7 @@ namespace BandTracker.Models
             conn.Open();
 
             var cmd = conn.CreateCommand() as MySqlCommand;
-            cmd.CommandText = @"INSERT INTO stylists (name) VALUES (@name);";
+            cmd.CommandText = @"INSERT INTO venues (name) VALUES (@name);";
 
             MySqlParameter name = new MySqlParameter();
             name.ParameterName = "@name";
@@ -60,34 +60,34 @@ namespace BandTracker.Models
             }
 
         }
-        public static List<Stylist> GetAll()
+        public static List<Venue> GetAll()
         {
-            List<Stylist> allStylists = new List<Stylist> {};
+            List<Venue> allVenues = new List<Venue> {};
             MySqlConnection conn = DB.Connection();
             conn.Open();
             var cmd = conn.CreateCommand() as MySqlCommand;
-            cmd.CommandText = @"SELECT * FROM stylists;";
+            cmd.CommandText = @"SELECT * FROM venues;";
             var rdr = cmd.ExecuteReader() as MySqlDataReader;
             while(rdr.Read())
             {
               int id = rdr.GetInt32(0);
               string name = rdr.GetString(1);
-              Stylist newStylist = new Stylist(name, id);
-              allStylists.Add(newStylist);
+              Venue newVenue = new Venue(name, id);
+              allVenues.Add(newVenue);
             }
             conn.Close();
             if (conn != null)
             {
                 conn.Dispose();
             }
-            return allStylists;
+            return allVenues;
         }
-        public static Stylist Find(int id)
+        public static Venue Find(int id)
         {
             MySqlConnection conn = DB.Connection();
             conn.Open();
             var cmd = conn.CreateCommand() as MySqlCommand;
-            cmd.CommandText = @"SELECT * FROM stylists WHERE id = (@searchId);";
+            cmd.CommandText = @"SELECT * FROM venues WHERE id = (@searchId);";
 
             MySqlParameter searchId = new MySqlParameter();
             searchId.ParameterName = "@searchId";
@@ -103,20 +103,20 @@ namespace BandTracker.Models
               Id = rdr.GetInt32(0);
               Name = rdr.GetString(1);
             }
-            Stylist newStylist = new Stylist(Name, Id);
+            Venue newVenue = new Venue(Name, Id);
             conn.Close();
             if (conn != null)
             {
                 conn.Dispose();
             }
-            return newStylist;
+            return newVenue;
         }
         public static void DeleteAll()
         {
             MySqlConnection conn = DB.Connection();
             conn.Open();
             var cmd = conn.CreateCommand() as MySqlCommand;
-            cmd.CommandText = @"DELETE FROM stylist;";
+            cmd.CommandText = @"DELETE FROM venue;";
             cmd.ExecuteNonQuery();
             conn.Close();
             if (conn != null)
@@ -124,42 +124,42 @@ namespace BandTracker.Models
                 conn.Dispose();
             }
         }
-        public List<Client> GetClients()
+        public List<Band> GetBands()
         {
-            List<Client> allStylistClients = new List<Client> {};
+            List<Band> allVenueBands = new List<Band> {};
             MySqlConnection conn = DB.Connection();
             conn.Open();
             var cmd = conn.CreateCommand() as MySqlCommand;
-            cmd.CommandText = @"SELECT * FROM clients WHERE stylist_id = @stylist_id;";
+            cmd.CommandText = @"SELECT * FROM bands WHERE venue_id = @venue_id;";
 
-            MySqlParameter stylistId = new MySqlParameter();
-            stylistId.ParameterName = "@stylist_id";
-            stylistId.Value = this._id;
-            cmd.Parameters.Add(stylistId);
+            MySqlParameter venueId = new MySqlParameter();
+            venueId.ParameterName = "@venue_id";
+            venueId.Value = this._id;
+            cmd.Parameters.Add(venueId);
 
 
             var rdr = cmd.ExecuteReader() as MySqlDataReader;
             while(rdr.Read())
             {
-              int clientId = rdr.GetInt32(0);
-              string clientName = rdr.GetString(1);
-              int clientStylistId = rdr.GetInt32(2);
-              Client newClient = new Client(clientName, clientStylistId, clientId);
-              allStylistClients.Add(newClient);
+              int bandId = rdr.GetInt32(0);
+              string bandName = rdr.GetString(1);
+              int bandVenueId = rdr.GetInt32(2);
+              Band newBand = new Band(bandName, bandVenueId, bandId);
+              allVenueBands.Add(newBand);
             }
             conn.Close();
             if (conn != null)
             {
                 conn.Dispose();
             }
-            return allStylistClients;
+            return allVenueBands;
         }
-        public void UpdateStylist(string newName)
+        public void UpdateVenue(string newName)
         {
             MySqlConnection conn = DB.Connection();
             conn.Open();
             var cmd = conn.CreateCommand() as MySqlCommand;
-            cmd.CommandText = @"UPDATE stylists SET name = @newName WHERE id = @searchId;";
+            cmd.CommandText = @"UPDATE venues SET name = @newName WHERE id = @searchId;";
 
             MySqlParameter searchId = new MySqlParameter();
             searchId.ParameterName = "@searchId";
