@@ -1,4 +1,4 @@
-# [MVC](https://www.tutorialspoint.com/mvc_framework/mvc_framework_introduction.htm)-Band Tracker
+# [C#/MVC/SQL](https://www.tutorialspoint.com/mvc_framework/mvc_framework_introduction.htm)-Band Tracker
 
 ## **`[WARNING]:`** **`Some aspects of this README.md file are only viewable when rendering this Markdown file in your editor-of-choice and may not display the formatting properly if viewed via GitHub.`**
 * An alternative method to view this README.md file with its formatting intact is for example, use of the [Atom](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=0ahUKEwjyvuTvvL7XAhUR8WMKHcNoA2YQFggmMAA&url=https%3A%2F%2Fatom.io%2F&usg=AOvVaw2f1xmShfpKULMHZBtecYLV) editor based on your OS:
@@ -24,7 +24,7 @@ This website is our fourth project in the C# course and incorporates MVC and SQL
 
 | Database schema for this project: |
 |:---:|
-|![Database Schema1](https://github.com/falconswoosh/BandTracker.Solution/blob/master/BandTracker/wwwroot/img/schema.PNG?raw=true "This displays the database schema for this project")|
+|![Database Schema1](https://github.com/falconswoosh/BandTracker.Solution2/blob/master/BandTracker/wwwroot/img/schema.PNG?raw=true "This displays the database schema for this project")|
 <table style="background-color: #000;" style="color:#0000ff;" border=2 cellspacing=2 cellpadding=2>
   <tr>
     <td colspan="2" bgcolor="white;" style="text-align:center;"><font color=#fff;" font-family: Babas; font-size: 6em;">Launching MAMP and Creating mySQL databases for this project<br>(ensure you verify installation location and adjust to your particular installation and OS.)</font></td>

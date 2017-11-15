@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using MySql.Data.MySqlBand;
+using MySql.Data.MySqlClient;
 using System.Linq;
 using HairSalon;
 using System;
